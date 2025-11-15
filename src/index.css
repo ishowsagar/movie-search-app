@@ -1,0 +1,46 @@
+/* general reset */
+* {
+  box-sizing: border-box;
+}
+html,
+body,
+h1,
+h2,
+h3,
+h4,
+ul,
+li {
+  padding: 0;
+  margin: 0;
+}
+
+/* base styles */
+html {
+  font-size: 10px;
+}
+
+body {
+  background-color: rgb(244, 244, 244);
+  color: #333;
+}
+
+p {
+  font-size: 1.6rem;
+}
+
+small {
+  font-size: 1.2rem;
+}
+
+/* wrapper of app component els */
+.container {
+  margin: 0 auto;
+  max-width: 800px;
+  padding: 40px;
+}
+
+/* h1 --> title of app component */
+.title {
+  font-size: 4.7rem;
+  text-align: center;
+}
