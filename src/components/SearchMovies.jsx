@@ -1,5 +1,5 @@
 import { useReducer } from "react";
-import MovieCard from "./MovieCard"
+import MovieCard from "./MovieCard";
 function SearchMovies() {
   // ! All states management
   const [state, dispatch] = useReducer(
@@ -10,7 +10,10 @@ function SearchMovies() {
           return { ...state, query: action.value };
         }
         case "UPDATE_MOVIE": {
-          return { ...state, movie: action.movie };
+          return { ...state, movie: action.movie, hasLoaded: true };
+        }
+        case "UPDATE_MOVIE_ERROR": {
+          return { ...state, hasLoaded: false };
         }
         default: {
           return state;
@@ -22,11 +25,12 @@ function SearchMovies() {
       // all state variables properties --> defined here
       query: "",
       movie: [],
+      hasLoaded: null,
     }
   );
 
   // ! fetching states and store them as destructured props
-  const { query, movie } = state;
+  const { query, movie, hasLoaded } = state;
 
   const searchMovieFn = async (e) => {
     e.preventDefault();
@@ -34,16 +38,14 @@ function SearchMovies() {
     try {
       const url = `https://api.themoviedb.org/3/search/movie?api_key=bfe696c235c63da555786ee616cbdf1d&language=en-US&query=${query}&page=1&include_adult=false`;
       const response = await fetch(url);
-      if (response.ok) {
-        const data = await response.json();
-        dispatch({ type: "UPDATE_MOVIE", movie: data.results });
-      }
       if (!response.ok) {
-        throw new Error();
+        throw new Error("Failed to fetch movies");
       }
-      //   console.log(data)
+      const data = await response.json();
+      dispatch({ type: "UPDATE_MOVIE", movie: data.results });
     } catch (err) {
       console.error("caught error fetching :", err);
+      dispatch({ type: "UPDATE_MOVIE_ERROR" });
     }
   };
   return (
@@ -68,7 +70,14 @@ function SearchMovies() {
           Search
         </button>
       </form>
-      <MovieCard movie={movie} />
+      {hasLoaded === true ? (
+        <MovieCard movie={movie} />
+      ) : hasLoaded === false ? (
+        <div className="error-loading-movie">
+          <h1>Unexpected error Caught while Searching movie! </h1>
+          <p className="warning-text">bhai vpn lagake krona try again! 😭✅</p>
+        </div>
+      ) : null}
     </>
   );
 }

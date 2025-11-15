@@ -164,3 +164,15 @@ small {
     margin-bottom: 0px;
   }
 }
+
+/* displaing fallback ui incase there's an error */
+.error-loading-movie {
+  max-width: 477px;
+  margin: 27px auto;
+  background-color: antiquewhite;
+}
+
+.warning-text {
+  color: red;
+  font-weight: lighter;
+}
