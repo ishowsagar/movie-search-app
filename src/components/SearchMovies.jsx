@@ -1,4 +1,5 @@
 import { useReducer } from "react";
+import MovieCard from "./MovieCard"
 function SearchMovies() {
   // ! All states management
   const [state, dispatch] = useReducer(
@@ -67,29 +68,7 @@ function SearchMovies() {
           Search
         </button>
       </form>
-      <div className="card-list">
-        {movie
-          .filter((movie) => movie.poster_path)
-          .map((movie) => (
-            <div className="card" key={movie.id}>
-              <img
-                className="card--image"
-                alt={`${movie.title}`}
-                src={`https://image.tmdb.org/t/p/w185_and_h278_bestv2/${movie.poster_path}`}
-              />
-              <div className="card-content">
-                <h3 className="card--title">{movie.title}</h3>
-                <p>
-                  <small>RELEASE DATE : {movie.release_date}</small>
-                </p>
-                <p>
-                  <small>RATING : {movie.vote_average}</small>
-                </p>
-                <p className="card--title">{movie.overview}</p>
-              </div>
-            </div>
-          ))}
-      </div>
+      <MovieCard movie={movie} />
     </>
   );
 }
