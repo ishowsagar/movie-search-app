@@ -191,6 +191,7 @@ small {
   animation: fadeIn 0.5s ease-in;
 }
 
+/* empty div for making spinner animation */
 .spinner {
   margin: 0 auto;
   width: 60px;
