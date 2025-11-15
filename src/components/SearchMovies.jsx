@@ -9,11 +9,19 @@ function SearchMovies() {
         case "UPDATE_INPUT": {
           return { ...state, query: action.value };
         }
+        case "SET_LOADING": {
+          return { ...state, isLoading: true };
+        }
         case "UPDATE_MOVIE": {
-          return { ...state, movie: action.movie, hasLoaded: true };
+          return {
+            ...state,
+            movie: action.movie,
+            hasLoaded: true,
+            isLoading: false,
+          };
         }
         case "UPDATE_MOVIE_ERROR": {
-          return { ...state, hasLoaded: false };
+          return { ...state, hasLoaded: false, isLoading: false };
         }
         default: {
           return state;
@@ -26,15 +34,17 @@ function SearchMovies() {
       query: "",
       movie: [],
       hasLoaded: null,
+      isLoading: false,
     }
   );
 
   // ! fetching states and store them as destructured props
-  const { query, movie, hasLoaded } = state;
+  const { query, movie, hasLoaded, isLoading } = state;
 
   const searchMovieFn = async (e) => {
     e.preventDefault();
     console.log("searching for:", query);
+    dispatch({ type: "SET_LOADING" });
     try {
       const url = `https://api.themoviedb.org/3/search/movie?api_key=bfe696c235c63da555786ee616cbdf1d&language=en-US&query=${query}&page=1&include_adult=false`;
       const response = await fetch(url);
@@ -70,7 +80,12 @@ function SearchMovies() {
           Search
         </button>
       </form>
-      {hasLoaded === true ? (
+      {isLoading ? (
+        <div className="loading">
+          <div className="spinner"></div>
+          <h2>Loading movies... 🎬</h2>
+        </div>
+      ) : hasLoaded === true ? (
         <MovieCard movie={movie} />
       ) : hasLoaded === false ? (
         <div className="error-loading-movie">
